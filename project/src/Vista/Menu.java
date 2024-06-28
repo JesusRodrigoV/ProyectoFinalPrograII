@@ -1,13 +1,9 @@
-package Controlador;
+package Vista;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import Vista.Login;
-import Vista.Register;
-
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;

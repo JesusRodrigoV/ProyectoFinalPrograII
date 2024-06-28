@@ -1,26 +1,22 @@
 package Vista;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Color;
+
+import Controlador.ControladorLogin;
+
+import java.awt.event.*;
+import java.sql.*;
 
 public class Login extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
+    private PanelConFondo contentPane;
     private JTextField usuario;
     private JPasswordField contrasena;
     private boolean contrasenaVisible = false;
-    private JTextField numCuenta;
+    
     /**
      * Launch the application.
      */
@@ -42,156 +38,119 @@ public class Login extends JFrame {
      */
     public Login() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
-        contentPane = new JPanel();
-        contentPane.setBackground(new Color(204, 255, 228));
+        setBounds(100, 100, 450, 248);
+        contentPane = new PanelConFondo("/resources/Banco Mundial.png");
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
-        contentPane.setLayout(null);
-
-        JLabel lblNewLabel = new JLabel("Usuario");
-        lblNewLabel.setBounds(66, 41, 66, 14);
-        contentPane.add(lblNewLabel);
-
-        JLabel lblNewLabel_1 = new JLabel("Clave");
-        lblNewLabel_1.setBounds(66, 81, 66, 14);
-        contentPane.add(lblNewLabel_1);
-
+        GridBagLayout gbl_contentPane = new GridBagLayout();
+        gbl_contentPane.columnWidths = new int[]{50, 70, 75, 75, 15, 30, 50, 0};
+        gbl_contentPane.rowHeights = new int[]{166, 20, 21, 5, 23, 15, 0};
+        gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        contentPane.setLayout(gbl_contentPane);
+                
+        JLabel lblNewLabel = new JLabel("Usuario:");
+        lblNewLabel.setForeground(new Color(70, 121, 72));
+        lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+        gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel.gridx = 1;
+        gbc_lblNewLabel.gridy = 1;
+        contentPane.add(lblNewLabel, gbc_lblNewLabel);
+        
         usuario = new JTextField();
         usuario.setBackground(new Color(232, 253, 244));
-        usuario.setBounds(142, 38, 182, 20);
-        contentPane.add(usuario);
+        GridBagConstraints gbc_usuario = new GridBagConstraints();
+        gbc_usuario.fill = GridBagConstraints.HORIZONTAL;
+        gbc_usuario.insets = new Insets(0, 0, 5, 5);
+        gbc_usuario.gridwidth = 2;
+        gbc_usuario.gridx = 2;
+        gbc_usuario.gridy = 1;
+        contentPane.add(usuario, gbc_usuario);
         usuario.setColumns(10);
+        
+        JLabel lblNewLabel_1 = new JLabel("Clave:");
+        lblNewLabel_1.setForeground(new Color(70, 121, 72));
+        lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+        gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
+        gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_1.gridx = 1;
+        gbc_lblNewLabel_1.gridy = 2;
+        contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
         
         contrasena = new JPasswordField();
         contrasena.setBackground(new Color(232, 253, 244));
-        contrasena.setBounds(142, 79, 182, 19);
-        contentPane.add(contrasena);
-
-        JButton btnNewButton = new JButton("Aceptar");
-        btnNewButton.addActionListener(new ActionListener() {
+        GridBagConstraints gbc_contrasena = new GridBagConstraints();
+        gbc_contrasena.fill = GridBagConstraints.HORIZONTAL;
+        gbc_contrasena.insets = new Insets(0, 0, 5, 5);
+        gbc_contrasena.gridwidth = 2;
+        gbc_contrasena.gridx = 2;
+        gbc_contrasena.gridy = 2;
+        contentPane.add(contrasena, gbc_contrasena);
+        
+        JButton btnNewButton_2 = new JButton();
+        btnNewButton_2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                buscar();
+                if (contrasenaVisible) {
+                    contrasena.setEchoChar('*');
+                } else {
+                    contrasena.setEchoChar((char) 0);
+                }
+                contrasenaVisible = !contrasenaVisible;
             }
         });
-        btnNewButton.setBounds(142, 165, 89, 23);
-        contentPane.add(btnNewButton);
-
+        
+        btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
+        btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 8));
+/* 
+        btnNewButton_2.setBorderPainted(false);
+        btnNewButton_2.setContentAreaFilled(false);
+        btnNewButton_2.setFocusPainted(false);
+        btnNewButton_2.setOpaque(false);
+*/
+        GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
+        gbc_btnNewButton_2.gridx = 5;
+        gbc_btnNewButton_2.gridy = 2;
+        contentPane.add(btnNewButton_2, gbc_btnNewButton_2);
+        ImageIcon icono = imagen.getScaledImageIcon("/resources/eye.png", 20, 20);
+        if (icono != null) {
+        	btnNewButton_2.setIcon(icono);
+        } else {
+        	btnNewButton_2.setText("Sin imagen");
+        }
+        
         JButton btnNewButton_1 = new JButton("Salir");
+        btnNewButton_1.setForeground(new Color(70, 121, 72));
         btnNewButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
         });
-        btnNewButton_1.setBounds(255, 165, 89, 23);
-        contentPane.add(btnNewButton_1);
         
-        JButton btnNewButton_2 = new JButton("Mostrar");
-        btnNewButton_2.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		if (contrasenaVisible) {
-                    contrasena.setEchoChar('*');
-                } else {
-                    contrasena.setEchoChar((char) 0);
-                }
-        		contrasenaVisible = !contrasenaVisible;
-        	}
+        JButton btnNewButton = new JButton("Aceptar");
+        btnNewButton.setForeground(new Color(70, 121, 72));
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	ControladorLogin log = new ControladorLogin(contrasena, usuario);
+            	log.buscar();
+                
+            }
         });
-        btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
-        btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 8));
-        btnNewButton_2.setBounds(341, 78, 59, 21);
-        contentPane.add(btnNewButton_2);
+        GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+        gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
+        gbc_btnNewButton.gridx = 2;
+        gbc_btnNewButton.gridy = 4;
+        contentPane.add(btnNewButton, gbc_btnNewButton);
         
-        JLabel lblNewLabel_1_1 = new JLabel("Num. Cuenta");
-        lblNewLabel_1_1.setBounds(66, 120, 66, 14);
-        contentPane.add(lblNewLabel_1_1);
-        
-        numCuenta = new JTextField();
-        numCuenta.setBackground(new Color(232, 253, 244));
-        numCuenta.setColumns(10);
-        numCuenta.setBounds(142, 118, 182, 20);
-        contentPane.add(numCuenta);
+        GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+        gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
+        gbc_btnNewButton_1.gridx = 3;
+        gbc_btnNewButton_1.gridy = 4;
+        contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
     }
     
-    public String contraIngresada() {
-        char[] passwordChars = contrasena.getPassword();
-        return new String(passwordChars);
-    }
-
-    public void buscar() {
-        String sql = "";
-        int id = 0;
-        ResultSet buscar = null;
-        Statement stmt = null;
-        Connection conn = null;
-        String laContrasena = "";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://127.0.0.1:3306/banco?useSSL=false&serverTimezone=UTC";
-            String user = "root";
-            String password = "admin";
-            conn = DriverManager.getConnection(url, user, password);
-            stmt = conn.createStatement();
-
-            sql = "SELECT * FROM banco.usuario WHERE usuario_nombre = '" + usuario.getText() + "'";
-            buscar = stmt.executeQuery(sql);
-            while (buscar.next()) {
-            	id = buscar.getInt("id_usuario");
-            	String usuario = buscar.getString("usuario_nombre");
-                laContrasena = buscar.getString("contrasena");
-            }
-            
-            
-            if (laContrasena.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "El usuario no existe");
-            } else {
-                boolean ver = laContrasena.equals(contraIngresada());
-                
-                if (ver) {
-                	int id_client = 0;
-                	sql = "SELECT id_cliente FROM banco.personas WHERE id_usuario = "+ id ;
-                    buscar = stmt.executeQuery(sql);
-                    while (buscar.next()) {
-                    	id_client = buscar.getInt("id_cliente");
-                        
-                    }
-                	
-                	sql = "SELECT * FROM banco.cuentas_cliente WHERE id_cuenta_cliente = " + Integer.parseInt(numCuenta.getText()) + " AND id_cliente = "+ id_client ;
-                	int id_cuenta_client = 0;
-                    buscar = stmt.executeQuery(sql);
-                    while (buscar.next()) {
-                    	id_cuenta_client = buscar.getInt("id_cuenta_cliente");
-                    	int tipocuenta = buscar.getInt("id_cuenta");
-                        int id_cliente = buscar.getInt("id_cliente");
-                        
-                    }
-                    if (id_cuenta_client == 0) {
-                    	JOptionPane.showMessageDialog(null, "La cuenta no existe");
-                    }else{
-                    	Cajero cajero = new Cajero(id, id_cuenta_client);
-                        cajero.setVisible(true);
-                        dispose();
-                    }
-                    
-                    
-                } else {
-                    JOptionPane.showMessageDialog(null, "Contraseña incorrecta. Inténtelo de nuevo");
-                }
-            }
-            
-            
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-            System.out.println("Class error");
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar archivo");
-            }
-        }
-    }
+    
 }

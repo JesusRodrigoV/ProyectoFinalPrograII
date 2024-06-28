@@ -34,7 +34,7 @@ public class Cajero extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Cajero frame = new Cajero(0, 0);
+                    Cajero frame = new Cajero(0);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -46,9 +46,8 @@ public class Cajero extends JFrame {
     /**
      * Create the frame.
      */
-    public Cajero(int id, int id_cuenta) {
+    public Cajero(int id) {
         this.id = id;
-        this.id_cuenta = id_cuenta;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
@@ -239,4 +238,11 @@ public class Cajero extends JFrame {
             }
         }
     }
+    
+    private double saldo() {
+    	double saldo = 0;
+    	return saldo;
+    }
 }
+
+

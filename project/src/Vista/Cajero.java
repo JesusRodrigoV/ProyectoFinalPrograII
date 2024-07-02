@@ -1,32 +1,26 @@
+// LIsto
+
 package Vista;
 
-import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import java.awt.event.ActionListener;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.SystemColor;
+import javax.swing.border.MatteBorder;
+import java.awt.event.*;
+import java.awt.*;
 
 public class Cajero extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField textFieldMonto;
     private int id;
     private int id_cuenta;
-
+  //private final Color hoverBackground = new Color(0, 168, 107);
+    private Color verdeBoton = new Color(66, 245, 158);
+    private Color verdeOscuro = new Color(13, 171, 0);
+    private Color rojo = new Color(255, 91, 91);
+    private Color fondoNormal = Color.WHITE;
+    private Color negro = Color.BLACK;
+    private Color blanco = Color.white;
     /**
      * Launch the application.
      */
@@ -34,7 +28,8 @@ public class Cajero extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Cajero frame = new Cajero(0);
+                    Cajero frame = new Cajero();
+                    //Cajero frame = new Cajero(0);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -46,202 +41,211 @@ public class Cajero extends JFrame {
     /**
      * Create the frame.
      */
-    public Cajero(int id) {
-        this.id = id;
+    //public Cajero(int id) {
+    public Cajero() {
+        //this.id = id;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 687, 300);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(204, 255, 228));
+        contentPane.setBackground(new Color(255, 255, 255));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
-        contentPane.setLayout(null);
+        GridBagLayout gbl_contentPane = new GridBagLayout();
+        gbl_contentPane.columnWidths = new int[]{20, 125, 125, 125, 125, 20, 0};
+        gbl_contentPane.rowHeights = new int[]{10, 30, 35, 30, 23, 33, 23, 0};
+        gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+        contentPane.setLayout(gbl_contentPane);
+        
+        JLabel lblNewLabel_2 = new JLabel("");
+        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+        gbc_lblNewLabel_2.gridheight = 3;
+        gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
+        gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNewLabel_2.gridx = 3;
+        gbc_lblNewLabel_2.gridy = 1;
+        contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
+        
+        JLabel lblBienvenido = new JLabel("Bienvenido ");
+        lblBienvenido.setForeground(verdeOscuro);
+        lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
+        GridBagConstraints gbc_lblBienvenido = new GridBagConstraints();
+        gbc_lblBienvenido.anchor = GridBagConstraints.WEST;
+        gbc_lblBienvenido.gridheight = 3;
+        gbc_lblBienvenido.fill = GridBagConstraints.VERTICAL;
+        gbc_lblBienvenido.insets = new Insets(0, 0, 5, 5);
+        gbc_lblBienvenido.gridx = 2;
+        gbc_lblBienvenido.gridy = 1;
+        contentPane.add(lblBienvenido, gbc_lblBienvenido);
 
-        JLabel lblNewLabel_1 = new JLabel("Monto");
-        lblNewLabel_1.setBounds(76, 73, 46, 14);
-        contentPane.add(lblNewLabel_1);
+        //Seccion Panel Imagen
 
-        textFieldMonto = new JTextField();
-        textFieldMonto.setBackground(new Color(232, 253, 244));
-        textFieldMonto.setBounds(140, 70, 146, 20);
-        contentPane.add(textFieldMonto);
-        textFieldMonto.setColumns(10);
+        //JPanel panel = new JPanel();
+        ImagePanel panel = new ImagePanel("/resources/logoMejor.png");
+        GridBagConstraints gbc_panel = new GridBagConstraints();
+        gbc_panel.gridheight = 3;
+        gbc_panel.insets = new Insets(0, 0, 5, 5);
+        gbc_panel.fill = GridBagConstraints.BOTH;
+        gbc_panel.gridx = 1;
+        gbc_panel.gridy = 1;
+        contentPane.add(panel, gbc_panel);
 
-        JButton btnDepositar = new JButton("Depositar");
-        btnDepositar.setBackground(new Color(240, 240, 240));
-        btnDepositar.addActionListener(new ActionListener() {
+        // Boton Transferencia
+
+        JButton btnTransefer = new JButton("Transferencias");
+        btnTransefer.setBackground(new Color(240, 240, 240));
+        btnTransefer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                double montoDepositar = Double.parseDouble(textFieldMonto.getText());
-                deposito(montoDepositar);
+                //double montoDepositar = Double.parseDouble(textFieldMonto.getText());
+                //deposito(montoDepositar);
             }
         });
-        btnDepositar.setBounds(76, 146, 120, 23);
-        contentPane.add(btnDepositar);
-
-        JButton btnRetirar = new JButton("Retirar");
-        btnRetirar.addActionListener(new ActionListener() {
+        GridBagConstraints gbc_btnTransefer = new GridBagConstraints();
+        gbc_btnTransefer.fill = GridBagConstraints.BOTH;
+        gbc_btnTransefer.insets = new Insets(0, 0, 5, 5);
+        gbc_btnTransefer.gridx = 1;
+        gbc_btnTransefer.gridy = 5;
+        btnTransefer.setHorizontalAlignment(SwingConstants.CENTER);
+        btnTransefer.setFocusPainted(false);
+        btnTransefer.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
+        btnTransefer.setBackground(fondoNormal);
+        btnTransefer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                entraMouse(btnTransefer);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                saleMouse(btnTransefer);
+            }
+            });
+        contentPane.add(btnTransefer, gbc_btnTransefer);
+        
+        //Boton Salir Cerrar Sesion
+        
+        JButton btnSalir = new JButton("Cerrar Sesion");
+        btnSalir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	double montoDepositar = Double.parseDouble(textFieldMonto.getText());
-                retiro(montoDepositar);
+            	Menu menu = new Menu();
+            	menu.setVisible(true);
+                dispose();
             }
         });
-        btnRetirar.setBounds(245, 146, 120, 23);
-        contentPane.add(btnRetirar);
+        GridBagConstraints gbc_btnSalir = new GridBagConstraints();
+        gbc_btnSalir.anchor = GridBagConstraints.NORTHEAST;
+        gbc_btnSalir.insets = new Insets(0, 0, 5, 5);
+        gbc_btnSalir.gridx = 4;
+        gbc_btnSalir.gridy = 1;
+        btnSalir.setHorizontalAlignment(SwingConstants.CENTER);
+        btnSalir.setFocusPainted(false);
+        btnSalir.setBorder(new MatteBorder(0, 0, 0, 0, verdeOscuro));
+        btnSalir.setBackground(fondoNormal);
+        btnSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnSalir.setOpaque(true);
+                btnSalir.setForeground(rojo);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnSalir.setOpaque(false);
+                btnSalir.setForeground(negro);
+            }
+            });
+        contentPane.add(btnSalir, gbc_btnSalir);
+                
+        //Boton Pagos
+        
+        JButton btnPagos = new JButton("Pagos");
+        GridBagConstraints gbc_btnPagos = new GridBagConstraints();
+        gbc_btnPagos.fill = GridBagConstraints.BOTH;
+        gbc_btnPagos.insets = new Insets(0, 0, 5, 5);
+        gbc_btnPagos.gridx = 2;
+        gbc_btnPagos.gridy = 5;
+        btnPagos.setHorizontalAlignment(SwingConstants.CENTER);
+        btnPagos.setFocusPainted(false);
+        btnPagos.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
+        btnPagos.setBackground(fondoNormal);
+        btnPagos.addMouseListener(new MouseAdapter() {
+         	@Override
+         	public void mouseEntered(MouseEvent e) {
+         		entraMouse(btnPagos);
+         	}
+         	@Override
+         	public void mouseExited(MouseEvent e) {
+         		saleMouse(btnPagos);
+         	}
+         });
+        contentPane.add(btnPagos, gbc_btnPagos);
 
-        JButton btnReporte = new JButton("Reporte");
+        //Boton Reporte
+        
+        JButton btnReporte = new JButton("Reportes");
         btnReporte.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Reporte reporte = new Reporte(id, id_cuenta);
                 reporte.setVisible(true);
             }
         });
-        btnReporte.setBounds(76, 208, 120, 23);
-        contentPane.add(btnReporte);
+        GridBagConstraints gbc_btnReporte = new GridBagConstraints();
+        gbc_btnReporte.fill = GridBagConstraints.BOTH;
+        gbc_btnReporte.insets = new Insets(0, 0, 5, 5);
+        gbc_btnReporte.gridx = 3;
+        gbc_btnReporte.gridy = 5;
+        btnReporte.setHorizontalAlignment(SwingConstants.CENTER);
+        btnReporte.setFocusPainted(false);
+        btnReporte.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
+        btnReporte.setBackground(fondoNormal);
+        btnReporte.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                entraMouse(btnReporte);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                saleMouse(btnReporte);
+            }
+            });
+        contentPane.add(btnReporte, gbc_btnReporte);
+
+        //Boton Perfil
         
-        JButton btnSalir = new JButton("Salir");
-        btnSalir.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		dispose();
-        	}
-        });
-        btnSalir.setBounds(245, 208, 120, 23);
-        contentPane.add(btnSalir);
-        
-        JLabel lblNewLabel = new JLabel("Transacciones");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setBounds(118, 23, 191, 13);
-        contentPane.add(lblNewLabel);
+        JButton btnPerfil = new JButton("Perfil");
+        GridBagConstraints gbc_btnPerfil = new GridBagConstraints();
+        gbc_btnPerfil.fill = GridBagConstraints.BOTH;
+        gbc_btnPerfil.insets = new Insets(0, 0, 5, 5);
+        gbc_btnPerfil.gridx = 4;
+        gbc_btnPerfil.gridy = 5;
+        btnPerfil.setHorizontalAlignment(SwingConstants.CENTER);
+        btnPerfil.setFocusPainted(false);
+        btnPerfil.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
+        btnPerfil.setBackground(fondoNormal);
+        btnPerfil.addMouseListener(new MouseAdapter() {
+         	@Override
+         	public void mouseEntered(MouseEvent e) {
+         		entraMouse(btnPerfil);
+         	}
+         	@Override
+         	public void mouseExited(MouseEvent e) {
+         		saleMouse(btnPerfil);
+         	}
+         });
+        contentPane.add(btnPerfil, gbc_btnPerfil);
     }
     
-    private void deposito(double monto) {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/banco?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC", 
-                    "root", 
-                    "admin");
-            conn.setAutoCommit(false);
-
-            String query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setDouble(1, monto);
-                pstmt.setString(2, "deposito");
-                pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                pstmt.setInt(4, id_cuenta);
-
-                int rowsInserted = pstmt.executeUpdate();
-                if (rowsInserted > 0) {
-                    JOptionPane.showMessageDialog(null, "Se realizó la transaccion");
-                    textFieldMonto.setText("");
-                    System.out.println("Insertado");
-                    conn.commit();
-                } else {
-                    throw new SQLException("No se pudo insertar la transacción.");
-                }
-            } catch (SQLException ex) {
-                if (conn != null) {
-                    try {
-                        conn.rollback();
-                        System.out.println("Transacción fallida. Se han revertido los cambios.");
-                    } catch (SQLException rollbackEx) {
-                        rollbackEx.printStackTrace();
-                    }
-                }
-                ex.printStackTrace();
-            } finally {
-                if (conn != null) {
-                    try {
-                        conn.setAutoCommit(true);
-                        conn.close();
-                    } catch (SQLException closeEx) {
-                        closeEx.printStackTrace();
-                    }
-                }
-            }
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
+    private void entraMouse(JButton boton){
+        boton.setOpaque(true);
+        boton.setBackground(verdeBoton);
+        boton.setFont(new Font("Tahoma", Font.BOLD, 10));
     }
-    
-    private void retiro(double monto) {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/banco?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
-                    "root",
-                    "admin");
-            conn.setAutoCommit(false);
-
-            double saldo = 0;
-            String query = "SELECT monto, tipo FROM banco.transacciones WHERE id_cuenta_cliente = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setInt(1, id_cuenta);
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    while (rs.next()) {
-                        double elMonto = rs.getDouble("monto");
-                        String tipo = rs.getString("tipo");
-                        switch (tipo) {
-                            case "deposito":
-                                saldo += elMonto;
-                                break;
-                            case "retiro":
-                                saldo -= elMonto;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            if (saldo >= monto) {
-                query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                    pstmt.setDouble(1, monto);
-                    pstmt.setString(2, "retiro");
-                    pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                    pstmt.setInt(4, id_cuenta);
-
-                    int rowsInserted = pstmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                    	JOptionPane.showMessageDialog(null, "Retiro exitoso");
-                        conn.commit();
-                    } else {
-                        throw new SQLException("No se pudo insertar la transacción.");
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente");
-            }
-        } catch (SQLException ex) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                    System.out.println("Transacción fallida. Se han revertido los cambios.");
-                } catch (SQLException rollbackEx) {
-                    rollbackEx.printStackTrace();
-                }
-            }
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException closeEx) {
-                    closeEx.printStackTrace();
-                }
-            }
-        }
-    }
-    
-    private double saldo() {
-    	double saldo = 0;
-    	return saldo;
+    private void saleMouse(JButton boton){
+        boton.setOpaque(false);
+        boton.setBackground(fondoNormal);
+        boton.setFont(new Font("Tahoma", Font.BOLD, 11));
     }
 }
 

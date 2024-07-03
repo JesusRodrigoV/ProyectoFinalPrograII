@@ -145,8 +145,13 @@ public class Login extends JFrame {
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	ControladorLogin log = new ControladorLogin(contrasena, usuario);
-            	log.buscar();
-                
+                log.buscar();
+                int id = log.id_client();
+            	if(log.buscar()) {
+            		Cajero cajero = new Cajero(id, usuario);
+                    cajero.setVisible(true);
+                    dispose();
+            	}
             }
         });
         btnNewButton.setHorizontalAlignment(SwingConstants.CENTER);

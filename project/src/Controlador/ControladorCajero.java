@@ -3,19 +3,48 @@ package Controlador;
 import java.sql.*;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class ControladorCajero {
-    /*
-    private void deposito(double monto) {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/banco?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC", 
-                    "root", 
-                    "admin");
-            conn.setAutoCommit(false);
+    private JTextField textFieldMonto;
+    private JTextField usuario;
+    private int id_cuenta;
+    private Connection conn;
 
+    public ControladorCajero (int id_cuenta, JTextField textFieldMonto, JTextField usuario){
+        this.id_cuenta = id_cuenta;
+        this.textFieldMonto = textFieldMonto;
+        this.usuario = usuario;
+        try {
+            this.conn = ConexionBD.getInstance().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public String nombre() {
+    	String nombre = "";
+    	try{
+            String query = "SELECT personas.nombres FROM banco.usuario, banco.personas WHERE personas.id_usuario = usuario.id_usuario "
+            		+ "AND usuario.usuario_nombre = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, usuario.getText());
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                    	nombre = rs.getString("nombres");
+                    }
+                    return nombre;
+                }
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Class error");
+        } 
+    	return nombre;
+    }
+    public void deposito(double monto) {
+        try {
+            conn.setAutoCommit(false);
             String query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setDouble(1, monto);
@@ -26,7 +55,7 @@ public class ControladorCajero {
                 int rowsInserted = pstmt.executeUpdate();
                 if (rowsInserted > 0) {
                     JOptionPane.showMessageDialog(null, "Se realizó la transaccion");
-                    //textFieldMonto.setText("");
+                    textFieldMonto.setText("");
                     System.out.println("Insertado");
                     conn.commit();
                 } else {
@@ -42,32 +71,104 @@ public class ControladorCajero {
                     }
                 }
                 ex.printStackTrace();
-            } finally {
-                if (conn != null) {
-                    try {
-                        conn.setAutoCommit(true);
-                        conn.close();
-                    } catch (SQLException closeEx) {
-                        closeEx.printStackTrace();
-                    }
-                }
-            }
-        } catch (SQLException | ClassNotFoundException ex) {
+            } 
+        } catch (SQLException ex) {
             ex.printStackTrace();
-        }
+            System.out.println("Class error");
+        } 
     }
     
-    private void retiro(double monto) {
-        Connection conn = null;
+    public void retiro(double monto) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/banco?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
-                    "root",
-                    "admin");
             conn.setAutoCommit(false);
+            if (saldo() >= monto) {
+                String query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setDouble(1, monto);
+                    pstmt.setString(2, "retiro");
+                    pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    pstmt.setInt(4, id_cuenta);
 
-            double saldo = 0;
+                    int rowsInserted = pstmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                    	JOptionPane.showMessageDialog(null, "Retiro exitoso");
+                        conn.commit();
+                    } else {
+                        throw new SQLException("No se pudo insertar la transacción.");
+                    }
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente");
+            }
+        } catch (SQLException ex) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    System.out.println("Transacción fallida. Se han revertido los cambios.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            ex.printStackTrace();
+        } 
+    }
+    
+    public void transferencia(double monto, int id_cuenta_destino) {
+        try {
+            conn.setAutoCommit(false);
+            if (saldo() >= monto) {
+                String query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setDouble(1, monto);
+                    pstmt.setString(2, "retiro");
+                    pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    pstmt.setInt(4, id_cuenta);
+
+                    int rowsInserted = pstmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                    	JOptionPane.showMessageDialog(null, "Transaccion exitosa");
+                        conn.commit();
+                    } else {
+                        throw new SQLException("No se pudo insertar la transacción.");
+                    }
+                }
+                query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setDouble(1, monto);
+                    pstmt.setString(2, "deposito");
+                    pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    pstmt.setInt(4, id_cuenta_destino);
+    
+                    int rowsInserted = pstmt.executeUpdate();
+                    if (rowsInserted > 0) {
+                        JOptionPane.showMessageDialog(null, "Se realizó la transaccion");
+                        textFieldMonto.setText("");
+                        System.out.println("Insertado");
+                        conn.commit();
+                    } else {
+                        throw new SQLException("No se pudo insertar la transacción.");
+                    }
+                } 
+            }else {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente");
+            }
+        } catch (SQLException ex) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    System.out.println("Transacción fallida. Se han revertido los cambios.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            ex.printStackTrace();
+        } 
+    }
+
+    public double saldo() {
+    	double saldo = 0;
+        try{
             String query = "SELECT monto, tipo FROM banco.transacciones WHERE id_cuenta_cliente = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setInt(1, id_cuenta);
@@ -86,53 +187,10 @@ public class ControladorCajero {
                     }
                 }
             }
-
-            if (saldo >= monto) {
-                query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                    pstmt.setDouble(1, monto);
-                    pstmt.setString(2, "retiro");
-                    pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                    pstmt.setInt(4, id_cuenta);
-
-                    int rowsInserted = pstmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                    	JOptionPane.showMessageDialog(null, "Retiro exitoso");
-                        conn.commit();
-                    } else {
-                        throw new SQLException("No se pudo insertar la transacción.");
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente");
-            }
-        } catch (SQLException ex) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                    System.out.println("Transacción fallida. Se han revertido los cambios.");
-                } catch (SQLException rollbackEx) {
-                    rollbackEx.printStackTrace();
-                }
-            }
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException closeEx) {
-                    closeEx.printStackTrace();
-                }
-            }
-        }
-    }
-    
-    private double saldo() {
-    	double saldo = 0;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Class error");
+        } 
     	return saldo;
     }
-        */
 }

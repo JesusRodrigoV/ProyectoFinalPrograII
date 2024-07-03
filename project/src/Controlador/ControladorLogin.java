@@ -1,6 +1,7 @@
 package Controlador;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,8 +32,29 @@ public class ControladorLogin {
         char[] passwordChars = contrasena.getPassword();
         return new String(passwordChars);
     }
-
-    public void buscar() {
+    public int id_client() {
+    	int id = 0;
+    	try{
+            String query = "SELECT personas.id_cliente FROM banco.usuario, banco.personas WHERE personas.id_usuario = usuario.id_usuario "
+            		+ "AND usuario.usuario_nombre = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, usuario.getText());
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                    	id = rs.getInt("id_cliente");
+                    }
+                    return id;
+                }
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Class error");
+        } 
+    	return id;
+    }
+    public boolean buscar() {
+    	
         String sql = "";
         int id = 0;
         ResultSet buscar = null;
@@ -58,27 +80,19 @@ public class ControladorLogin {
                     while (buscar.next()) {
                         id_client = buscar.getInt("id_cliente");
                     }
-                    JOptionPane.showMessageDialog(null, "La contraseña es correcta");
-                    /*Cajero cajero = new Cajero(id, id_cuenta_client);
-                    cajero.setVisible(true);
-                    dispose();
-                    */
+                    
+                    return true;
+                    
                     
                 } else {
-                    JOptionPane.showMessageDialog(null, "Contraseña incorrecta. Inténtelo de nuevo");
+                     JOptionPane.showMessageDialog(null, "Contraseña incorrecta. Inténtelo de nuevo");
+                    return false;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Class error");
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar archivo");
-            }
         }
+        return false;
     }
 }

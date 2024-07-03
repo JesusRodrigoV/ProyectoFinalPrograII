@@ -5,6 +5,9 @@ package Vista;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
+import Controlador.ControladorCajero;
+
 import java.awt.event.*;
 import java.awt.*;
 
@@ -12,9 +15,9 @@ public class Cajero extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private int id;
+    private static JTextField usuario;
+    private static int id;
     private int id_cuenta;
-  //private final Color hoverBackground = new Color(0, 168, 107);
     private Color verdeBoton = new Color(66, 245, 158);
     private Color verdeOscuro = new Color(13, 171, 0);
     private Color rojo = new Color(255, 91, 91);
@@ -28,8 +31,8 @@ public class Cajero extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Cajero frame = new Cajero();
-                    //Cajero frame = new Cajero(0);
+                    //Cajero frame = new Cajero();
+                    Cajero frame = new Cajero(id, usuario);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -41,9 +44,10 @@ public class Cajero extends JFrame {
     /**
      * Create the frame.
      */
-    //public Cajero(int id) {
-    public Cajero() {
-        //this.id = id;
+    public Cajero(int id, JTextField usuario) {
+    //public Cajero() {
+        this.usuario = usuario;
+        this.id = id;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 687, 300);
@@ -59,19 +63,25 @@ public class Cajero extends JFrame {
         gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
         contentPane.setLayout(gbl_contentPane);
         
-        JLabel lblNewLabel_2 = new JLabel("");
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-        gbc_lblNewLabel_2.gridheight = 3;
-        gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
-        gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_2.gridx = 3;
-        gbc_lblNewLabel_2.gridy = 1;
-        contentPane.add(lblNewLabel_2, gbc_lblNewLabel_2);
+        ControladorCajero control = new ControladorCajero(id_cuenta, null, usuario);
+        String nombre = control.nombre();
+
+        System.out.println(nombre);
+
+        JLabel lblNombre = new JLabel(nombre);
+        lblNombre.setForeground(new Color(13, 171, 0));
+        lblNombre.setBackground(new Color(13, 171, 0));
+        lblNombre.setFont(new Font("Tahoma", Font.BOLD, 16));
+        GridBagConstraints gbc_lblNombre = new GridBagConstraints();
+        gbc_lblNombre.fill = GridBagConstraints.BOTH;
+        gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNombre.gridx = 3;
+        gbc_lblNombre.gridy = 2;
+        contentPane.add(lblNombre, gbc_lblNombre);
         
         JLabel lblBienvenido = new JLabel("Bienvenido ");
         lblBienvenido.setForeground(verdeOscuro);
-        lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 22));
         lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
         GridBagConstraints gbc_lblBienvenido = new GridBagConstraints();
         gbc_lblBienvenido.anchor = GridBagConstraints.WEST;
@@ -100,8 +110,10 @@ public class Cajero extends JFrame {
         btnTransefer.setBackground(new Color(240, 240, 240));
         btnTransefer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //double montoDepositar = Double.parseDouble(textFieldMonto.getText());
-                //deposito(montoDepositar);
+                Transeferencia transfer = new Transeferencia(id, usuario);
+                transfer.setVisible(true);
+                dispose();
+                
             }
         });
         GridBagConstraints gbc_btnTransefer = new GridBagConstraints();
@@ -161,6 +173,14 @@ public class Cajero extends JFrame {
         //Boton Pagos
         
         JButton btnPagos = new JButton("Pagos");
+        btnPagos.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		ControladorCajero control = new ControladorCajero(id_cuenta, null, usuario);
+                Pagos pagar = new Pagos(id, usuario);
+                pagar.setVisible(true);
+                dispose();
+        	}
+        });
         GridBagConstraints gbc_btnPagos = new GridBagConstraints();
         gbc_btnPagos.fill = GridBagConstraints.BOTH;
         gbc_btnPagos.insets = new Insets(0, 0, 5, 5);

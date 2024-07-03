@@ -13,7 +13,12 @@ public class MenuPrincipal extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JButton selectedButton = null;
-
+    private Color verdeBoton = new Color(66, 245, 158);
+    private Color verdeOscuro = new Color(13, 171, 0);
+    private Color rojo = new Color(255, 91, 91);
+    private Color negro = Color.BLACK;
+    private Color blanco = Color.white;
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
@@ -33,9 +38,6 @@ public class MenuPrincipal extends JFrame {
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
 
-        Color normalBackground = contentPane.getBackground();
-        Color verdeBoton = new Color(66, 245, 158);
-
         GridBagLayout gbl_contentPane = new GridBagLayout();
         gbl_contentPane.columnWidths = new int[]{20, 80, 50, 20, 0};
         gbl_contentPane.rowHeights = new int[]{20, 0, 20, 30, 5, 30, 5, 30, 30, 0};
@@ -44,6 +46,7 @@ public class MenuPrincipal extends JFrame {
         contentPane.setLayout(gbl_contentPane);
         
         JLabel lblNewLabel = new JLabel("Bienvenido");
+        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
         GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
         gbc_lblNewLabel.gridwidth = 2;
         gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -61,56 +64,105 @@ public class MenuPrincipal extends JFrame {
         gbc_panel.gridy = 2;
         contentPane.add(panel, gbc_panel);
 
-        JButton btnNewButton_1 = new JButton("Registro");
-        btnNewButton_1.setFocusPainted(false);
-        btnNewButton_1.setContentAreaFilled(false);
-        btnNewButton_1.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
-        btnNewButton_1.setHorizontalAlignment(SwingConstants.CENTER);
-        btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-        btnNewButton_1.addActionListener(new ActionListener() {
+        JButton btnRegistro = new JButton("Registro");
+        btnRegistro.setFocusPainted(false);
+        btnRegistro.setContentAreaFilled(false);
+        btnRegistro.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+        btnRegistro.setHorizontalAlignment(SwingConstants.CENTER);
+        btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 11));
+        btnRegistro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (selectedButton != null) {
                     selectedButton.setOpaque(false);
-                    selectedButton.setBackground(normalBackground);
+                    selectedButton.setBackground(blanco);
                     selectedButton.setFont(new Font("Tahoma", Font.BOLD, 10));
                 }
-                btnNewButton_1.setOpaque(true);
-                btnNewButton_1.setBackground(verdeBoton);
-                btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-                selectedButton = btnNewButton_1;
+                btnRegistro.setOpaque(true);
+                btnRegistro.setBackground(verdeBoton);
+                btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 11));
+                selectedButton = btnRegistro;
 
                 Menu app = new Menu();
                 app.setVisible(true);
                 dispose();
             }
         });
-        btnNewButton_1.addMouseListener(new MouseAdapter() {
+        btnRegistro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                if (btnNewButton_1 != selectedButton) {
-                    btnNewButton_1.setOpaque(true);
-                    btnNewButton_1.setBackground(verdeBoton);
-                    btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 10));
+                if (btnRegistro != selectedButton) {
+                    btnRegistro.setOpaque(true);
+                    btnRegistro.setBackground(verdeBoton);
+                    btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 10));
                 }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if (btnNewButton_1 != selectedButton) {
-                    btnNewButton_1.setOpaque(false);
-                    btnNewButton_1.setBackground(normalBackground);
-                    btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+                if (btnRegistro != selectedButton) {
+                    btnRegistro.setOpaque(false);
+                    btnRegistro.setBackground(blanco);
+                    btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 11));
                 }
             }
         });
-        GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-        gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-        gbc_btnNewButton_1.fill = GridBagConstraints.BOTH;
-        gbc_btnNewButton_1.gridx = 2;
-        gbc_btnNewButton_1.gridy = 5;
-        contentPane.add(btnNewButton_1, gbc_btnNewButton_1);
+        GridBagConstraints gbc_btnRegistro = new GridBagConstraints();
+        gbc_btnRegistro.insets = new Insets(0, 0, 5, 5);
+        gbc_btnRegistro.fill = GridBagConstraints.BOTH;
+        gbc_btnRegistro.gridx = 2;
+        gbc_btnRegistro.gridy = 5;
+        contentPane.add(btnRegistro, gbc_btnRegistro);
 
-        JButton btnNewButton = new JButton("Cuentas");
+        JButton btnCuentas = new JButton("Cuentas");
+        btnCuentas.setFocusPainted(false);
+        btnCuentas.setContentAreaFilled(false);
+        btnCuentas.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+        btnCuentas.setHorizontalAlignment(SwingConstants.CENTER);
+        btnCuentas.setFont(new Font("Tahoma", Font.BOLD, 11));
+        btnCuentas.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (selectedButton != null) {
+                    selectedButton.setOpaque(false);
+                    selectedButton.setBackground(blanco);
+                    selectedButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+                }
+                btnCuentas.setOpaque(true);
+                btnCuentas.setBackground(verdeBoton);
+                btnCuentas.setFont(new Font("Tahoma", Font.BOLD, 10));
+                selectedButton = btnCuentas;
+
+                Planes app = new Planes();
+                app.setVisible(true);
+                dispose();
+            }
+        });
+        btnCuentas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (btnCuentas != selectedButton) {
+                    btnCuentas.setOpaque(true);
+                    btnCuentas.setBackground(verdeBoton);
+                    btnCuentas.setFont(new Font("Tahoma", Font.BOLD, 10));
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (btnCuentas != selectedButton) {
+                    btnCuentas.setOpaque(false);
+                    btnCuentas.setBackground(blanco);
+                    btnCuentas.setFont(new Font("Tahoma", Font.BOLD, 11));
+                }
+            }
+        });
+        GridBagConstraints gbc_btnCuentas = new GridBagConstraints();
+        gbc_btnCuentas.fill = GridBagConstraints.BOTH;
+        gbc_btnCuentas.insets = new Insets(0, 0, 5, 5);
+        gbc_btnCuentas.gridx = 2;
+        gbc_btnCuentas.gridy = 3;
+        contentPane.add(btnCuentas, gbc_btnCuentas);
+
+        JButton btnNewButton = new JButton("NewButton");
         btnNewButton.setFocusPainted(false);
         btnNewButton.setContentAreaFilled(false);
         btnNewButton.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
@@ -120,7 +172,7 @@ public class MenuPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (selectedButton != null) {
                     selectedButton.setOpaque(false);
-                    selectedButton.setBackground(normalBackground);
+                    selectedButton.setBackground(blanco);
                     selectedButton.setFont(new Font("Tahoma", Font.BOLD, 11));
                 }
                 btnNewButton.setOpaque(true);
@@ -128,9 +180,7 @@ public class MenuPrincipal extends JFrame {
                 btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 10));
                 selectedButton = btnNewButton;
 
-                Planes app = new Planes();
-                app.setVisible(true);
-                dispose();
+                JOptionPane.showMessageDialog(contentPane, "Button Clicked");
             }
         });
         btnNewButton.addMouseListener(new MouseAdapter() {
@@ -147,7 +197,7 @@ public class MenuPrincipal extends JFrame {
             public void mouseExited(MouseEvent e) {
                 if (btnNewButton != selectedButton) {
                     btnNewButton.setOpaque(false);
-                    btnNewButton.setBackground(normalBackground);
+                    btnNewButton.setBackground(blanco);
                     btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
                 }
             }
@@ -156,54 +206,18 @@ public class MenuPrincipal extends JFrame {
         gbc_btnNewButton.fill = GridBagConstraints.BOTH;
         gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
         gbc_btnNewButton.gridx = 2;
-        gbc_btnNewButton.gridy = 3;
+        gbc_btnNewButton.gridy = 7;
         contentPane.add(btnNewButton, gbc_btnNewButton);
+    }
 
-        JButton btnNewButton_2 = new JButton("NewButton");
-        btnNewButton_2.setFocusPainted(false);
-        btnNewButton_2.setContentAreaFilled(false);
-        btnNewButton_2.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
-        btnNewButton_2.setHorizontalAlignment(SwingConstants.CENTER);
-        btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-        btnNewButton_2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (selectedButton != null) {
-                    selectedButton.setOpaque(false);
-                    selectedButton.setBackground(normalBackground);
-                    selectedButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-                }
-                btnNewButton_2.setOpaque(true);
-                btnNewButton_2.setBackground(verdeBoton);
-                btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 10));
-                selectedButton = btnNewButton_2;
-
-                JOptionPane.showMessageDialog(contentPane, "Button Clicked");
-            }
-        });
-        btnNewButton_2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (btnNewButton_2 != selectedButton) {
-                    btnNewButton_2.setOpaque(true);
-                    btnNewButton_2.setBackground(verdeBoton);
-                    btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 10));
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (btnNewButton_2 != selectedButton) {
-                    btnNewButton_2.setOpaque(false);
-                    btnNewButton_2.setBackground(normalBackground);
-                    btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-                }
-            }
-        });
-        GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-        gbc_btnNewButton_2.fill = GridBagConstraints.BOTH;
-        gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 5);
-        gbc_btnNewButton_2.gridx = 2;
-        gbc_btnNewButton_2.gridy = 7;
-        contentPane.add(btnNewButton_2, gbc_btnNewButton_2);
+    private void entraMouse(JButton boton){
+        boton.setOpaque(true);
+        boton.setBackground(verdeBoton);
+        boton.setFont(new Font("Tahoma", Font.BOLD, 10));
+    }
+    private void saleMouse(JButton boton){
+        boton.setOpaque(false);
+        boton.setBackground(blanco);
+        boton.setFont(new Font("Tahoma", Font.BOLD, 11));
     }
 }

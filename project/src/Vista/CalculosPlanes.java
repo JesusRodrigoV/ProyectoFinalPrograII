@@ -181,8 +181,8 @@ public class CalculosPlanes extends JFrame {
         JButton btnSalir = new JButton("Salir");
         btnSalir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Cajero app = new Cajero();
-                app.setVisible(true);
+                //Cajero app = new Cajero();
+                //app.setVisible(true);
                 dispose();
             }
         });

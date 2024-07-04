@@ -46,8 +46,6 @@ public class Cajero extends JFrame {
      */
     public Cajero(int id, JTextField usuario) {
     //public Cajero() {
-        this.usuario = usuario;
-        this.id = id;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 687, 300);
@@ -202,11 +200,14 @@ public class Cajero extends JFrame {
          });
         contentPane.add(btnPagos, gbc_btnPagos);
 
+        id_cuenta = control.idCuenta(id);
+
         //Boton Reporte
         
         JButton btnReporte = new JButton("Reportes");
         btnReporte.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 Reporte reporte = new Reporte(id, id_cuenta);
                 reporte.setVisible(true);
             }
@@ -235,6 +236,13 @@ public class Cajero extends JFrame {
         //Boton Perfil
         
         JButton btnPerfil = new JButton("Perfil");
+        btnPerfil.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Perfil perfil = new Perfil(id, id_cuenta);
+        		perfil.setVisible(true);
+        		
+        	}
+        });
         GridBagConstraints gbc_btnPerfil = new GridBagConstraints();
         gbc_btnPerfil.fill = GridBagConstraints.BOTH;
         gbc_btnPerfil.insets = new Insets(0, 0, 5, 5);

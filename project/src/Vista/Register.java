@@ -19,7 +19,6 @@ import java.time.Period;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.ButtonGroup;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -36,6 +35,11 @@ public class Register extends JFrame {
     private JTextField cedula;
     private JTextField telefono;
     private JTextField anio;
+    private Color verdeBoton = new Color(66, 245, 158);
+    private Color verdeOscuro = new Color(13, 171, 0);
+    private Color rojo = new Color(255, 91, 91);
+    private Color fondoNormal = Color.WHITE;
+    private Color negro = Color.BLACK;
     
 
     /**
@@ -61,19 +65,20 @@ public class Register extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 438, 295);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(204, 255, 228));
+        contentPane.setBackground(new Color(255, 255, 255));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
         GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{0, 99, 42, 1, 59, 13, 66, 0, 0};
-        gbl_contentPane.rowHeights = new int[]{20, 14, 20, 20, 20, 20, 21, 21, 23, 0, 0};
-        gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_contentPane.columnWidths = new int[]{20, 95, 40, 40, 40, 40, 95, 20, 0};
+        gbl_contentPane.rowHeights = new int[]{20, 14, 20, 20, 20, 20, 21, 21, 23, 20, 0};
+        gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
         contentPane.setLayout(gbl_contentPane);
         
                 JLabel lblNewLabel_1 = new JLabel("Ingrese los siguientes datos");
                 lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+                lblNewLabel_1.setForeground(verdeBoton);
                 lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
                 GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
                 gbc_lblNewLabel_1.fill = GridBagConstraints.BOTH;
@@ -223,11 +228,10 @@ public class Register extends JFrame {
         
         JButton btnCrear = new JButton("Crear");
         GridBagConstraints gbc_btnCrear = new GridBagConstraints();
-        gbc_btnCrear.anchor = GridBagConstraints.EAST;
-        gbc_btnCrear.fill = GridBagConstraints.VERTICAL;
+        gbc_btnCrear.fill = GridBagConstraints.BOTH;
         gbc_btnCrear.insets = new Insets(0, 0, 5, 5);
-        gbc_btnCrear.gridwidth = 3;
-        gbc_btnCrear.gridx = 1;
+        gbc_btnCrear.gridwidth = 2;
+        gbc_btnCrear.gridx = 2;
         gbc_btnCrear.gridy = 8;
         contentPane.add(btnCrear, gbc_btnCrear);
 
@@ -243,7 +247,7 @@ public class Register extends JFrame {
         gbc_btnSalir.insets = new Insets(0, 0, 5, 5);
         gbc_btnSalir.fill = GridBagConstraints.BOTH;
         gbc_btnSalir.gridwidth = 2;
-        gbc_btnSalir.gridx = 5;
+        gbc_btnSalir.gridx = 4;
         gbc_btnSalir.gridy = 8;
         contentPane.add(btnSalir, gbc_btnSalir);
 

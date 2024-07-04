@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
+import Controlador.ControladorCajero;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -112,6 +115,13 @@ public class Transeferencia extends JFrame {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ControladorCajero control = control = new ControladorCajero(0, monto, usuario);;
+				int id_cuenta = control.idCuenta(id_cliente);
+				control.setId_cuenta(id_cuenta);
+				control.transferencia(Integer.parseInt(cuenta.getText()));
+				if(control.hecho()){
+					dispose();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();

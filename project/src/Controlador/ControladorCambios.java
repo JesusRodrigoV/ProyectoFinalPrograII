@@ -15,6 +15,7 @@ public class ControladorCambios {
     public String nuevaContrasena;
 	private Connection conn;
 	private JTextField usuario;
+    public boolean cerrar;
 	
 	public ControladorCambios(JTextField usuario) {
 		this.usuario = usuario;
@@ -112,4 +113,41 @@ public class ControladorCambios {
             }
     
     }
+    
+    public void cambiarUsuario(int id_usuario) {
+        cerrar = false;
+        String query = "UPDATE usuario SET usuario_nombre = ? WHERE id_usuario = ?";
+        
+        try {
+            conn.setAutoCommit(false); 
+            
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setString(1, usuario.getText());
+                pstmt.setInt(2, id_usuario);
+                
+                int rowsUpdated = pstmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    conn.commit(); 
+                    JOptionPane.showMessageDialog(null, "Usuario actualizado con éxito.");
+                    cerrar = true;
+                } else {
+                    throw new SQLException("No se pudo actualizar el usuario.");
+                }
+            }
+        } catch (SQLException ex) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); 
+                    System.out.println("Transacción fallida. Se han revertido los cambios.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            ex.printStackTrace();
+        }
+    }
+    public boolean hecho (){
+        return cerrar;
+    }
+    
 }

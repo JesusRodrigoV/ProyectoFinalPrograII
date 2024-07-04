@@ -40,9 +40,9 @@ public class MenuPrincipal extends JFrame {
 
         GridBagLayout gbl_contentPane = new GridBagLayout();
         gbl_contentPane.columnWidths = new int[]{20, 80, 50, 20, 0};
-        gbl_contentPane.rowHeights = new int[]{20, 0, 20, 30, 5, 30, 5, 30, 30, 0};
+        gbl_contentPane.rowHeights = new int[]{20, 0, 20, 30, 5, 30, 5, 30, 0};
         gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-        gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.rowWeights = new double[]{1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
         contentPane.setLayout(gbl_contentPane);
         
         JLabel lblNewLabel = new JLabel("Bienvenido");
@@ -57,14 +57,14 @@ public class MenuPrincipal extends JFrame {
         ImagePanel panel = new ImagePanel("/resources/LogoBancoMundial.png");
         GridBagConstraints gbc_panel = new GridBagConstraints();
         gbc_panel.gridwidth = 2;
-        gbc_panel.gridheight = 7;
+        gbc_panel.gridheight = 6;
         gbc_panel.insets = new Insets(0, 0, 0, 5);
         gbc_panel.fill = GridBagConstraints.BOTH;
         gbc_panel.gridx = 0;
         gbc_panel.gridy = 2;
         contentPane.add(panel, gbc_panel);
 
-        JButton btnRegistro = new JButton("Registro");
+        JButton btnRegistro = new JButton("Clientes");
         btnRegistro.setFocusPainted(false);
         btnRegistro.setContentAreaFilled(false);
         btnRegistro.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
@@ -161,53 +161,6 @@ public class MenuPrincipal extends JFrame {
         gbc_btnCuentas.gridx = 2;
         gbc_btnCuentas.gridy = 3;
         contentPane.add(btnCuentas, gbc_btnCuentas);
-
-        JButton btnNewButton = new JButton("NewButton");
-        btnNewButton.setFocusPainted(false);
-        btnNewButton.setContentAreaFilled(false);
-        btnNewButton.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
-        btnNewButton.setHorizontalAlignment(SwingConstants.CENTER);
-        btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (selectedButton != null) {
-                    selectedButton.setOpaque(false);
-                    selectedButton.setBackground(blanco);
-                    selectedButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-                }
-                btnNewButton.setOpaque(true);
-                btnNewButton.setBackground(verdeBoton);
-                btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 10));
-                selectedButton = btnNewButton;
-
-                JOptionPane.showMessageDialog(contentPane, "Button Clicked");
-            }
-        });
-        btnNewButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (btnNewButton != selectedButton) {
-                    btnNewButton.setOpaque(true);
-                    btnNewButton.setBackground(verdeBoton);
-                    btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 10));
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                if (btnNewButton != selectedButton) {
-                    btnNewButton.setOpaque(false);
-                    btnNewButton.setBackground(blanco);
-                    btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-                }
-            }
-        });
-        GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        gbc_btnNewButton.fill = GridBagConstraints.BOTH;
-        gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-        gbc_btnNewButton.gridx = 2;
-        gbc_btnNewButton.gridy = 7;
-        contentPane.add(btnNewButton, gbc_btnNewButton);
     }
 
     private void entraMouse(JButton boton){

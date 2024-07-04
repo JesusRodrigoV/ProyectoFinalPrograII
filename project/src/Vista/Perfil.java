@@ -82,10 +82,10 @@ public class Perfil extends JFrame {
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
 
 			if (op == 0) {
-				CambioUsuario user = new CambioUsuario();
+				CambioUsuario user = new CambioUsuario(id);
 				user.setVisible(true);
 			} else{
-				CambioContrasena contra  = new CambioContrasena();
+				CambioContrasena contra  = new CambioContrasena(id);
 				contra.setVisible(true);
 			}
 			}

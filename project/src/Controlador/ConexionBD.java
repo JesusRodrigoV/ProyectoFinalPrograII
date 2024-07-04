@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConexionBD {
     private static ConexionBD instance;
     private Connection connection;
-    private String url = "jdbc:mysql://127.0.0.1:3306/banco?useSSL=false&serverTimezone=UTC";
+    private String url = "jdbc:mysql://localhost:3306/banco?useSSL=false&serverTimezone=UTC";
     private String usuario = "root";
     private String contrasena = "admin";
 

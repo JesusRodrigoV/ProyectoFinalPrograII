@@ -160,13 +160,13 @@ public class CambioContrasena extends JFrame {
             public void mouseEntered(MouseEvent e) {
             	btnAceptar.setOpaque(true);
             	btnAceptar.setBackground(verdeBoton);
-                btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 10));
+                
             }
             @Override
             public void mouseExited(MouseEvent e) {
             	btnAceptar.setOpaque(false);
             	btnAceptar.setBackground(fondoNormal);
-            	btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 11));
+            	
             }
             });
 		contentPane.add(btnAceptar, gbc_btnAceptar);

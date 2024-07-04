@@ -52,6 +52,27 @@ public class ControladorCambios {
         } 
     	return id;
     }
+
+    public int id_usuario(int id) {
+    	try{
+            String query = "SELECT usuario.id_usuario FROM banco.usuario, banco.personas WHERE personas.id_usuario = usuario.id_usuario "
+            		+ "AND personas.id_cliente = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                pstmt.setInt(1, id);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                    	id = rs.getInt("id_usuario");
+                    }
+                    return id;
+                }
+            }
+            
+        }catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Class error");
+        } 
+    	return id;
+    }
 	
 	public String contraAntigua() {
 		String sql = "";
@@ -79,42 +100,45 @@ public class ControladorCambios {
 	    return null;
 	}
 
-    public void cambiarContra() {
-    	String query = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
+    public void cambiarContra(int id, JPasswordField contraNueva) {
+        String nuevaContrasena = new String(contraNueva.getPassword());
+        cerrar = false;
+        String query = "UPDATE usuario SET contrasena = ? WHERE id_usuario = ?";
         int id_cliente = 0;
+        int id_usuario = id_usuario(id);
+        System.out.println("id:" + id_usuario(id));
+        
         try {
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(false); 
+            
             try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, nuevaContrasena);
-                pstmt.setInt (2, id_client());
-                int rowsInserted = pstmt.executeUpdate();
-                if (rowsInserted > 0) {
-                    try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                        if (generatedKeys.next()) {
-                            id_cliente = generatedKeys.getInt(1);
-                        } else {
-                            throw new SQLException("Error al obtener el ID del cliente insertado.");
-                        }
-                    }
+                pstmt.setInt(2, id_usuario);
+                
+                int rowsUpdated = pstmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    conn.commit(); 
+                    System.out.println("Contraseña actualizada con éxito.");
+                    cerrar = true;
                 } else {
-                    throw new SQLException("No se pudo insertar en banco.personas.");
+                    throw new SQLException("No se pudo actualizar la contraseña.");
                 }
             }
-            } catch (SQLException ex) {
-                if (conn != null) {
-                    try {
-                        conn.rollback();
-                        System.out.println("Transacción fallida. Se han revertido los cambios.");
-                    } catch (SQLException rollbackEx) {
-                        rollbackEx.printStackTrace();
-                    }
+        } catch (SQLException ex) {
+            if (conn != null) {
+                try {
+                    conn.rollback(); 
+                    System.out.println("Transacción fallida. Se han revertido los cambios.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
                 }
-                ex.printStackTrace();
             }
-    
+            ex.printStackTrace();
+        }
     }
     
-    public void cambiarUsuario(int id_usuario) {
+    
+    public void cambiarUsuario(int id) {
         cerrar = false;
         String query = "UPDATE usuario SET usuario_nombre = ? WHERE id_usuario = ?";
         
@@ -123,7 +147,7 @@ public class ControladorCambios {
             
             try (PreparedStatement pstmt = conn.prepareStatement(query)) {
                 pstmt.setString(1, usuario.getText());
-                pstmt.setInt(2, id_usuario);
+                pstmt.setInt(2, id_usuario(id));
                 
                 int rowsUpdated = pstmt.executeUpdate();
                 if (rowsUpdated > 0) {

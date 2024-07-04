@@ -110,99 +110,111 @@ public class ControladorRegister {
             JOptionPane.showMessageDialog(null, "Error intente de nuevo");
         }
         
-
-        try {
-            conn.setAutoCommit(false);
-            try {
-                String query = "INSERT INTO banco.usuario (usuario_nombre, contrasena) VALUES (?, ?)";
-                int userId = 0;
-                try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-                    pstmt.setString(1, usuario);
-                    pstmt.setString(2, clave);
-                    int rowsInserted = pstmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                            if (generatedKeys.next()) {
-                                userId = generatedKeys.getInt(1);
-                            } else {
-                                throw new SQLException("Error al obtener el ID del usuario insertado.");
-                            }
-                        }
-                    } else {
-                        throw new SQLException("No se pudo insertar el usuario.");
-                    }
-                }
-                query = "INSERT INTO banco.personas (apellidos, nombres, cedula, telefono, id_usuario) VALUES (?, ?, ?, ?, ?)";
-                int id_cliente = 0;
-                try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-                    pstmt.setString(1, apelli);
-                    pstmt.setString(2, nombre);
-                    pstmt.setString(3, nCedula);
-                    pstmt.setInt(4, numCelular);
-                    pstmt.setInt(5, userId);
-                    int rowsInserted = pstmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                            if (generatedKeys.next()) {
-                                id_cliente = generatedKeys.getInt(1);
-                            } else {
-                                throw new SQLException("Error al obtener el ID del cliente insertado.");
-                            }
-                        }
-                    } else {
-                        throw new SQLException("No se pudo insertar en banco.personas.");
-                    }
-                }
-                query = "SELECT id_cuenta FROM banco.cuentas WHERE nombre = ?";
-                int id_cuenta = 0;
-                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                    pstmt.setString(1, plan);
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        if (rs.next()) {
-                            id_cuenta = rs.getInt("id_cuenta");
-                        } else {
-                            throw new SQLException("Cuenta no encontrada.");
-                        }
-                    }
-                }
-                query = "INSERT INTO cuentas_cliente (id_cuenta, id_cliente) VALUES (?, ?)";
-                int id_cuentas_cliente = 0; 
-                try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-                    pstmt.setInt(1, id_cuenta);
-                    pstmt.setInt(2, id_cliente);
-                    int rowsInserted = pstmt.executeUpdate();
-                    if (rowsInserted > 0) {
-                        System.out.println("Inserción exitosa en cuentas_cliente.");
-                        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                            if (generatedKeys.next()) {
-                                id_cuentas_cliente = generatedKeys.getInt(1);
-                                System.out.println("ID de cuentas_cliente generado: " + id_cuentas_cliente);
-                            } else {
-                                throw new SQLException("No se pudo obtener el ID generado de cuentas_cliente.");
-                            }
-                        }
-                    } else {
-                        throw new SQLException("No se pudo insertar en cuentas_cliente.");
-                    }
-                }
-
-                JOptionPane.showMessageDialog(null, "Se creo la cuenta. \nN. de cuenta: " + id_cuentas_cliente+"\nUsuario:"+
-                    nCedula+"\nContraseña:" + nCedula);
-                conn.commit();
-                cerrar = true;
-                System.out.println("Transacción exitosa.");
-
-            } catch (SQLException ex) {
-                conn.rollback();
-                System.out.println("Transacción fallida. Se han revertido los cambios.");
-                ex.printStackTrace();
-            } finally {
-                conn.setAutoCommit(true);
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        if(plan.isEmpty() || apelli.isEmpty() || nombre.isEmpty() || Integer.toString(numCelular).isEmpty() || nCedula.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Introduzca valores");
+                apellidos.setText("");
+                nombres.setText("");
+                telefono.setText("");
+                cedula.setText("");
         }
+        else{
+            try {
+                conn.setAutoCommit(false);
+                try {
+                    String query = "INSERT INTO banco.usuario (usuario_nombre, contrasena) VALUES (?, ?)";
+                    int userId = 0;
+                    try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                        pstmt.setString(1, usuario);
+                        pstmt.setString(2, clave);
+                        int rowsInserted = pstmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    userId = generatedKeys.getInt(1);
+                                } else {
+                                    throw new SQLException("Error al obtener el ID del usuario insertado.");
+                                }
+                            }
+                        } else {
+                            throw new SQLException("No se pudo insertar el usuario.");
+                        }
+                    }
+                    query = "INSERT INTO banco.personas (apellidos, nombres, cedula, telefono, id_usuario) VALUES (?, ?, ?, ?, ?)";
+                    int id_cliente = 0;
+                    try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                        pstmt.setString(1, apelli);
+                        pstmt.setString(2, nombre);
+                        pstmt.setString(3, nCedula);
+                        pstmt.setInt(4, numCelular);
+                        pstmt.setInt(5, userId);
+                        int rowsInserted = pstmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    id_cliente = generatedKeys.getInt(1);
+                                } else {
+                                    throw new SQLException("Error al obtener el ID del cliente insertado.");
+                                }
+                            }
+                        } else {
+                            throw new SQLException("No se pudo insertar en banco.personas.");
+                        }
+                    }
+                    query = "SELECT id_cuenta FROM banco.cuentas WHERE nombre = ?";
+                    int id_cuenta = 0;
+                    try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                        pstmt.setString(1, plan);
+                        try (ResultSet rs = pstmt.executeQuery()) {
+                            if (rs.next()) {
+                                id_cuenta = rs.getInt("id_cuenta");
+                            } else {
+                                throw new SQLException("Cuenta no encontrada.");
+                            }
+                        }
+                    }
+                    query = "INSERT INTO cuentas_cliente (id_cuenta, id_cliente) VALUES (?, ?)";
+                    int id_cuentas_cliente = 0; 
+                    try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                        pstmt.setInt(1, id_cuenta);
+                        pstmt.setInt(2, id_cliente);
+                        int rowsInserted = pstmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            System.out.println("Inserción exitosa en cuentas_cliente.");
+                            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    id_cuentas_cliente = generatedKeys.getInt(1);
+                                    System.out.println("ID de cuentas_cliente generado: " + id_cuentas_cliente);
+                                    cerrar = true;
+                                } else {
+                                    throw new SQLException("No se pudo obtener el ID generado de cuentas_cliente.");
+                                }
+                            }
+                        } else {
+                            throw new SQLException("No se pudo insertar en cuentas_cliente.");
+                        }
+                    }
+    
+                        
+                    conn.commit();
+                    if(cerrar){
+                        JOptionPane.showMessageDialog(null, "Se creo la cuenta. \nN. de cuenta: " + id_cuentas_cliente+"\nUsuario:"+
+                        nCedula+"\nContraseña:" + nCedula);
+                    }
+                    System.out.println("Transacción exitosa.");
+    
+                } catch (SQLException ex) {
+                    conn.rollback();
+                    System.out.println("Transacción fallida. Se han revertido los cambios.");
+                    ex.printStackTrace();
+                } finally {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
 
     }
 

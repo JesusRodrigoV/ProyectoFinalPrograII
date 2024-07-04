@@ -30,6 +30,7 @@ public class CambioUsuario extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private int id;
+	private JTextField usuario;
 	private Color verdeBoton = new Color(66, 245, 158);
     private Color verdeOscuro = new Color(13, 171, 0);
     private Color rojo = new Color(255, 91, 91);
@@ -98,6 +99,11 @@ public class CambioUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ControladorCambios cambios = new ControladorCambios(nombre);
 				cambios.cambiarUsuario(id);
+				System.out.println(id);
+				if(cambios.hecho()){
+					dispose();
+				}
+				
 			}
 		});
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();

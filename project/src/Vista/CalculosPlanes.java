@@ -145,7 +145,7 @@ public class CalculosPlanes extends JFrame {
         JButton botonCalcular = new JButton("Calcular");
         botonCalcular.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //calcularAhorro();
+                calcularAhorro();
             }
         });
         botonCalcular.setHorizontalAlignment(SwingConstants.CENTER);
@@ -171,7 +171,8 @@ public class CalculosPlanes extends JFrame {
         gbc_lblTipoDeCuenta.gridy = 7;
         contentPane.add(lblTipoDeCuenta, gbc_lblTipoDeCuenta);
         
-        comboBox = new JComboBox();
+        String[] lasCuentas = {"Ahorro Clásico", "Ahorro Junior", "Ahorro Senior", "Ahorro Platino"};
+        comboBox = new JComboBox(lasCuentas);
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.insets = new Insets(0, 0, 5, 5);
         gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -234,7 +235,7 @@ public class CalculosPlanes extends JFrame {
 
         
     }
-/*
+
     private void calcularAhorro() {
         try {
             double monto = Double.parseDouble(textField.getText());
@@ -277,7 +278,7 @@ public class CalculosPlanes extends JFrame {
             return 0;
         }
     }
-    */
+    
     private void entraMouse(JButton boton){
         boton.setOpaque(true);
         boton.setBackground(verdeBoton);

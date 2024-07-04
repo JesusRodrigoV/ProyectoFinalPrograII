@@ -37,25 +37,26 @@ public class Planes extends JFrame {
 	 */
 	public Planes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 574, 518);
 		contentPane = new JPanel();
+        contentPane.setBackground(blanco);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-        gbl_contentPane.columnWidths = new int[]{10, 60, 40, 50, 50, 50, 50, 40, 60, 10, 0};
-        gbl_contentPane.rowHeights = new int[]{10, 20, 25, 0, 60, 0, 60, 0, 60, 35, 20, 0};
-        gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.columnWidths = new int[]{20, 60, 40, 50, 50, 50, 50, 40, 60, 10, 20};
+        gbl_contentPane.rowHeights = new int[]{20, 20, 25, 25, 60, 25, 60, 0, 60, 35, 20, 20};
+        gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+        gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
         contentPane.setLayout(gbl_contentPane);
 
-        /* 
+         
         JButton btnNormal = new JButton();
         JButton btnProfesional = new JButton();
         JButton btnJoven = new JButton();
         JButton btnMayor = new JButton();
-        */
+        
         JLabel lblNewLabel = new JLabel("Ahorro e Inversión");
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -67,12 +68,12 @@ public class Planes extends JFrame {
         gbc_lblNewLabel.gridy = 1;
         contentPane.add(lblNewLabel, gbc_lblNewLabel);
 
-        
+        /*
         JButton btnNormal = createPlanButton("Normal");
         JButton btnJoven = createPlanButton("Joven");
         JButton btnProfesional = createPlanButton("Profesional");
         JButton btnMayor = createPlanButton("Mayor");
-        
+        */
         
         btnNormal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -151,6 +152,7 @@ public class Planes extends JFrame {
         
 
         textArea = new JTextArea();
+        textArea.setEditable(false);
         textArea.setBackground(new Color(255, 255, 255));
         GridBagConstraints gbc_textArea = new GridBagConstraints();
         gbc_textArea.gridheight = 6;
@@ -175,30 +177,6 @@ public class Planes extends JFrame {
         gbc_lblNewLabel_3.gridy = 7;
         contentPane.add(lblNewLabel_3, gbc_lblNewLabel_3);
         
-        
-        JButton btnMenu = new JButton("Volver al Menú");
-        btnMenu.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		btnMenu.setOpaque(true);
-        		btnMenu.setBackground(rojo);
-        		btnMenu.setForeground(blanco);
-        	}
-        	@Override
-        	public void mouseExited(MouseEvent e) {
-        		btnMenu.setOpaque(false);
-        		btnMenu.setBackground(normalBackground);
-        		btnMenu.setForeground(negro);
-        	}
-        });
-        btnMenu.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                MenuPrincipal app = new MenuPrincipal();
-                app.setVisible(true);
-                dispose();
-            }
-        });
-        
                 JButton btnCalcularInteres = new JButton("Calcular Interes");
                 btnCalcularInteres.setBackground(verdeBoton);
                 btnCalcularInteres.addActionListener(new ActionListener() {
@@ -212,7 +190,7 @@ public class Planes extends JFrame {
                 gbc_btnCalcularInteres.gridwidth = 2;
                 gbc_btnCalcularInteres.fill = GridBagConstraints.BOTH;
                 gbc_btnCalcularInteres.insets = new Insets(0, 0, 5, 5);
-                gbc_btnCalcularInteres.gridx = 1;
+                gbc_btnCalcularInteres.gridx = 3;
                 gbc_btnCalcularInteres.gridy = 9;
                 btnCalcularInteres.setFocusPainted(false);
                 //btnCalcularInteres.setContentAreaFilled(false);
@@ -231,30 +209,6 @@ public class Planes extends JFrame {
                  		btnCalcularInteres.setBackground(verdeBoton);
                  	}
                  });
-        
-        JButton btnCalcularInteres_1 = new JButton("Calcular Interes");
-        btnCalcularInteres_1.setHorizontalAlignment(SwingConstants.CENTER);
-        btnCalcularInteres_1.setFocusPainted(false);
-        btnCalcularInteres_1.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
-        btnCalcularInteres_1.setBackground(verdeBoton);
-        GridBagConstraints gbc_btnCalcularInteres_1 = new GridBagConstraints();
-        gbc_btnCalcularInteres_1.fill = GridBagConstraints.BOTH;
-        gbc_btnCalcularInteres_1.gridwidth = 2;
-        gbc_btnCalcularInteres_1.insets = new Insets(0, 0, 5, 5);
-        gbc_btnCalcularInteres_1.gridx = 4;
-        gbc_btnCalcularInteres_1.gridy = 9;
-        contentPane.add(btnCalcularInteres_1, gbc_btnCalcularInteres_1);
-        GridBagConstraints gbc_btnMenu = new GridBagConstraints();
-        gbc_btnMenu.gridwidth = 2;
-        gbc_btnMenu.fill = GridBagConstraints.BOTH;
-        gbc_btnMenu.insets = new Insets(0, 0, 5, 5);
-        gbc_btnMenu.gridx = 7;
-        gbc_btnMenu.gridy = 9;
-        btnMenu.setFocusPainted(false);
-        btnMenu.setContentAreaFilled(false);
-        btnMenu.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
-        btnMenu.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(btnMenu, gbc_btnMenu);
         
         ImagePanel panel = new ImagePanel("/resources/nbeneficios.png");
         GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -279,6 +233,41 @@ public class Planes extends JFrame {
         gbc_panel_2.gridx = 1;
         gbc_panel_2.gridy = 8;
         contentPane.add(panel_2, gbc_panel_2);     
+        
+        
+        JButton btnMenu = new JButton("Volver al Menú");
+        btnMenu.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		btnMenu.setOpaque(true);
+        		btnMenu.setBackground(rojo);
+        		btnMenu.setForeground(blanco);
+        	}
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		btnMenu.setOpaque(false);
+        		btnMenu.setBackground(normalBackground);
+        		btnMenu.setForeground(negro);
+        	}
+        });
+        btnMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MenuPrincipal app = new MenuPrincipal();
+                app.setVisible(true);
+                dispose();
+            }
+        });
+        GridBagConstraints gbc_btnMenu = new GridBagConstraints();
+        gbc_btnMenu.gridwidth = 2;
+        gbc_btnMenu.fill = GridBagConstraints.BOTH;
+        gbc_btnMenu.insets = new Insets(0, 0, 5, 5);
+        gbc_btnMenu.gridx = 5;
+        gbc_btnMenu.gridy = 9;
+        btnMenu.setFocusPainted(false);
+        btnMenu.setContentAreaFilled(false);
+        btnMenu.setBorder(new MatteBorder(1, 0, 0, 0, Color.BLACK));
+        btnMenu.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(btnMenu, gbc_btnMenu);
     }
 
     private JButton createPlanButton(String text) {

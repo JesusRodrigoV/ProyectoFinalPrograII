@@ -6,7 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
+import Controlador.ControladorCambios;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -26,8 +31,6 @@ public class CambioContrasena extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPasswordField passwordField;
-	private JPasswordField passwordField_1;
-	private JPasswordField passwordField_2;
 	private int id;
 	private Color verdeBoton = new Color(66, 245, 158);
     private Color verdeOscuro = new Color(13, 171, 0);
@@ -67,9 +70,9 @@ public class CambioContrasena extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{20, 80, 20, 30, 50, 80, 20, 0};
-		gbl_contentPane.rowHeights = new int[]{20, 13, 20, 20, 20, 20, 20, 0};
+		gbl_contentPane.rowHeights = new int[]{20, 13, 20, 20, 20, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblNewLabel = new JLabel("Contraseña");
@@ -83,32 +86,13 @@ public class CambioContrasena extends JFrame {
 		gbc_lblNewLabel.gridy = 1;
 		contentPane.add(lblNewLabel, gbc_lblNewLabel);
 		
-		JLabel lblNewLabel_1_2 = new JLabel("Antigua Contraseña:");
-		GridBagConstraints gbc_lblNewLabel_1_2 = new GridBagConstraints();
-		gbc_lblNewLabel_1_2.gridwidth = 2;
-		gbc_lblNewLabel_1_2.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_1_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_2.gridx = 1;
-		gbc_lblNewLabel_1_2.gridy = 2;
-		contentPane.add(lblNewLabel_1_2, gbc_lblNewLabel_1_2);
-		
-		passwordField_2 = new JPasswordField();
-		GridBagConstraints gbc_passwordField_2 = new GridBagConstraints();
-		gbc_passwordField_2.anchor = GridBagConstraints.NORTH;
-		gbc_passwordField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField_2.gridwidth = 3;
-		gbc_passwordField_2.gridx = 3;
-		gbc_passwordField_2.gridy = 2;
-		contentPane.add(passwordField_2, gbc_passwordField_2);
-		
 		JLabel lblNewLabel_1 = new JLabel("Nueva Contraseña:");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.gridwidth = 2;
 		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 3;
+		gbc_lblNewLabel_1.gridy = 2;
 		contentPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		passwordField = new JPasswordField();
@@ -118,31 +102,18 @@ public class CambioContrasena extends JFrame {
 		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField.gridwidth = 3;
 		gbc_passwordField.gridx = 3;
-		gbc_passwordField.gridy = 3;
+		gbc_passwordField.gridy = 2;
 		contentPane.add(passwordField, gbc_passwordField);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Repetir Contraseña:");
-		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1.gridwidth = 2;
-		gbc_lblNewLabel_1_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_1.gridx = 1;
-		gbc_lblNewLabel_1_1.gridy = 4;
-		contentPane.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
-		
-		passwordField_1 = new JPasswordField();
-		GridBagConstraints gbc_passwordField_1 = new GridBagConstraints();
-		gbc_passwordField_1.anchor = GridBagConstraints.NORTH;
-		gbc_passwordField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField_1.gridwidth = 3;
-		gbc_passwordField_1.gridx = 3;
-		gbc_passwordField_1.gridy = 4;
-		contentPane.add(passwordField_1, gbc_passwordField_1);
 		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ControladorCambios cambios = new ControladorCambios(null);
+				cambios.cambiarContra(id, passwordField);
+				if(cambios.hecho()){
+					JOptionPane.showMessageDialog(null, "Contraseña actualizada");
+					dispose();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
@@ -150,10 +121,10 @@ public class CambioContrasena extends JFrame {
 		gbc_btnAceptar.anchor = GridBagConstraints.NORTHEAST;
 		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAceptar.gridx = 2;
-		gbc_btnAceptar.gridy = 5;
+		gbc_btnAceptar.gridy = 3;
 		btnAceptar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnAceptar.setFocusPainted(false);
-		btnAceptar.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
+		btnAceptar.setBorder(new MatteBorder(1, 0, 0, 0, verdeOscuro));
         btnAceptar.setBackground(fondoNormal);
         btnAceptar.addMouseListener(new MouseAdapter() {
             @Override
@@ -181,7 +152,7 @@ public class CambioContrasena extends JFrame {
 		gbc_btnCancelar.anchor = GridBagConstraints.NORTH;
 		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancelar.gridx = 4;
-		gbc_btnCancelar.gridy = 5;
+		gbc_btnCancelar.gridy = 3;
 		btnCancelar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCancelar.setFocusPainted(false);
         btnCancelar.setBorder(new MatteBorder(1, 0, 0, 0, rojo));

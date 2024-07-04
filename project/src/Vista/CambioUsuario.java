@@ -1,5 +1,6 @@
 package Vista;
 
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -21,14 +22,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-public class CambioContrasena extends JFrame {
+public class CambioUsuario extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
 	private JPasswordField passwordField_2;
-	private int id;
 	private Color verdeBoton = new Color(66, 245, 158);
     private Color verdeOscuro = new Color(13, 171, 0);
     private Color rojo = new Color(255, 91, 91);
@@ -43,7 +43,7 @@ public class CambioContrasena extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CambioContrasena frame = new CambioContrasena(0);
+					CambioUsuario frame = new CambioUsuario();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,9 +55,7 @@ public class CambioContrasena extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CambioContrasena(int id) {
-		this.id = id;
-		
+	public CambioUsuario() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 374, 212);
 		contentPane = new JPanel();
@@ -154,13 +152,13 @@ public class CambioContrasena extends JFrame {
 		btnAceptar.setHorizontalAlignment(SwingConstants.CENTER);
 		btnAceptar.setFocusPainted(false);
 		btnAceptar.setBorder(new MatteBorder(0, 0, 1, 0, verdeOscuro));
-        btnAceptar.setBackground(fondoNormal);
-        btnAceptar.addMouseListener(new MouseAdapter() {
+		btnAceptar.setBackground(fondoNormal);
+		btnAceptar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
             	btnAceptar.setOpaque(true);
             	btnAceptar.setBackground(verdeBoton);
-                btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 10));
+            	btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 10));
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -172,10 +170,6 @@ public class CambioContrasena extends JFrame {
 		contentPane.add(btnAceptar, gbc_btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancelar.anchor = GridBagConstraints.NORTH;
@@ -201,3 +195,4 @@ public class CambioContrasena extends JFrame {
 		contentPane.add(btnCancelar, gbc_btnCancelar);
 	}
 }
+

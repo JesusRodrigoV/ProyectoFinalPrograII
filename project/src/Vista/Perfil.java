@@ -77,7 +77,17 @@ public class Perfil extends JFrame {
 		JButton Cambio = new JButton("Cambiar datos");
 		Cambio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showOptionDialog(null, "Solicitar cambio de contraseña", getTitle(), id, id_cuenta, null, getComponentListeners(), e);
+				String[] opciones = {"Usuario", "Contraseña"};
+				int op = JOptionPane.showOptionDialog(null, "Seleccione una opción para cambiar:", "Cambio de datos",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+			if (op == 0) {
+				CambioUsuario user = new CambioUsuario();
+				user.setVisible(true);
+			} else{
+				CambioContrasena contra  = new CambioContrasena();
+				contra.setVisible(true);
+			}
 			}
 		});
 		GridBagConstraints gbc_Cambio = new GridBagConstraints();

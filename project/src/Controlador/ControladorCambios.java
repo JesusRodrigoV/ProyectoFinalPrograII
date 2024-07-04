@@ -11,28 +11,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import Vista.*;
-
-public class ControladorLogin {
-	public JPasswordField contrasena;
-	public JTextField usuario;
+public class ControladorCambios {
+    public String nuevaContrasena;
 	private Connection conn;
-
-    
-	public ControladorLogin(JPasswordField contrasena, JTextField usuario) {
-		this.contrasena = contrasena;
+	private JTextField usuario;
+	
+	public ControladorCambios(JTextField usuario) {
 		this.usuario = usuario;
-        try {
+		try {
             this.conn = ConexionBD.getInstance().getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 	}
 	
-	public String contraIngresada() {
+	public String contraIngresada(JPasswordField contrasena) {
         char[] passwordChars = contrasena.getPassword();
         return new String(passwordChars);
     }
+
     public int id_client() {
     	int id = 0;
     	try{
@@ -54,48 +51,65 @@ public class ControladorLogin {
         } 
     	return id;
     }
-    public boolean buscar() {
-    	
-        String sql = "";
+	
+	public String contraAntigua() {
+		String sql = "";
         int id = 0;
         ResultSet buscar = null;
         Statement stmt = null;
         String laContrasena = "";
         try {
             stmt = conn.createStatement();
-            sql = "SELECT * FROM banco.usuario WHERE usuario_nombre = '" + usuario.getText() + "'";
+            sql = "SELECT contrasena FROM banco.usuario WHERE usuario_nombre = '" + usuario.getText() + "'";
             buscar = stmt.executeQuery(sql);
             while (buscar.next()) {
-                id = buscar.getInt("id_usuario");
-                String usuario = buscar.getString("usuario_nombre");
                 laContrasena = buscar.getString("contrasena");
             }
             
             if (laContrasena.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "El usuario no existe");
             } else {
-                if (laContrasena.equals(contraIngresada())) {
-                    int id_client = 0;
-                    sql = "SELECT id_cliente FROM banco.personas WHERE id_usuario = " + id;
-                    buscar = stmt.executeQuery(sql);
-                    while (buscar.next()) {
-                        id_client = buscar.getInt("id_cliente");
-                    }
-                    
-                    return true;
-                    
-                    
-                } else {
-                     JOptionPane.showMessageDialog(null, "Contraseña incorrecta. Inténtelo de nuevo");
-                    return false;
-                }
+            	return laContrasena;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Class error");
         }
-        return false;
+	    return null;
+	}
+
+    public void cambiarContra() {
+    	String query = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
+        int id_cliente = 0;
+        try {
+            conn.setAutoCommit(false);
+            try (PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                pstmt.setString(1, nuevaContrasena);
+                pstmt.setInt (2, id_client());
+                int rowsInserted = pstmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            id_cliente = generatedKeys.getInt(1);
+                        } else {
+                            throw new SQLException("Error al obtener el ID del cliente insertado.");
+                        }
+                    }
+                } else {
+                    throw new SQLException("No se pudo insertar en banco.personas.");
+                }
+            }
+            } catch (SQLException ex) {
+                if (conn != null) {
+                    try {
+                        conn.rollback();
+                        System.out.println("Transacción fallida. Se han revertido los cambios.");
+                    } catch (SQLException rollbackEx) {
+                        rollbackEx.printStackTrace();
+                    }
+                }
+                ex.printStackTrace();
+            }
+    
     }
-    
-    
 }

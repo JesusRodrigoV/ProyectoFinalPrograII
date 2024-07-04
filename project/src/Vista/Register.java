@@ -3,10 +3,13 @@ package Vista;
 import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 import Controlador.ControladorRegister;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -226,13 +229,27 @@ public class Register extends JFrame {
         gbc_cuentas.gridy = 7;
         contentPane.add(cuentas, gbc_cuentas);
         
-        JButton btnCrear = new JButton("Crear");
+        JButton btnCrear = new JButton("Crear Cuenta");
         GridBagConstraints gbc_btnCrear = new GridBagConstraints();
         gbc_btnCrear.fill = GridBagConstraints.BOTH;
         gbc_btnCrear.insets = new Insets(0, 0, 5, 5);
         gbc_btnCrear.gridwidth = 2;
         gbc_btnCrear.gridx = 2;
         gbc_btnCrear.gridy = 8;
+        btnCrear.setHorizontalAlignment(SwingConstants.CENTER);
+        btnCrear.setFocusPainted(false);
+        btnCrear.setBorder(new MatteBorder(1, 0, 0, 0, verdeOscuro));
+        btnCrear.setBackground(fondoNormal);
+        btnCrear.addMouseListener(new MouseAdapter() {
+         	@Override
+         	public void mouseEntered(MouseEvent e) {
+         		entraMouse(btnCrear);
+         	}
+         	@Override
+         	public void mouseExited(MouseEvent e) {
+         		saleMouse(btnCrear);
+         	}
+         });
         contentPane.add(btnCrear, gbc_btnCrear);
 
         planGroup = new ButtonGroup();
@@ -249,30 +266,41 @@ public class Register extends JFrame {
         gbc_btnSalir.gridwidth = 2;
         gbc_btnSalir.gridx = 4;
         gbc_btnSalir.gridy = 8;
+        btnSalir.setHorizontalAlignment(SwingConstants.CENTER);
+        btnSalir.setFocusPainted(false);
+        btnSalir.setBorder(new MatteBorder(1, 0, 0, 0, rojo));
+        btnSalir.setBackground(fondoNormal);
+        btnSalir.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		btnSalir.setOpaque(true);
+        		btnSalir.setBackground(rojo);
+        		btnSalir.setForeground(fondoNormal);
+        	}
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		btnSalir.setOpaque(false);
+        		btnSalir.setBackground(fondoNormal);
+        		btnSalir.setForeground(negro);
+        	}
+        });
         contentPane.add(btnSalir, gbc_btnSalir);
 
         
         btnCrear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ControladorRegister control = new ControladorRegister(cuentas, apellidos, nombres, telefono, cedula);
-            	int elanio = Integer.parseInt(anio.getText());
-            	int edadMin = 0;
-            	if (control.nDias(mes.getSelectedIndex() + 1, elanio, dia.getSelectedIndex() +1 )) {
-					if (control.mayorDe( dia.getSelectedIndex() + 1 , mes.getSelectedIndex() + 1, elanio, control.edadCuenta())) {
-						if (control.obtenerPlanSeleccionado().equals("joven") && control.edad(dia.getSelectedIndex() + 1 , mes.getSelectedIndex() + 1, elanio) <= 25) {
-							control.insertar();
-						} else if(control.obtenerPlanSeleccionado() != "joven"){
-							control.insertar();
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "La persona no cumple con el requisito de edad");
-						}
-					}else {
-						JOptionPane.showMessageDialog(null, "La persona no cumple con el requisito de edad");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Dia seleccionado no existe");
-				}
+                try{
+                    ControladorRegister control = new ControladorRegister(cuentas, apellidos, nombres, telefono, cedula);
+                    control.insertar();
+                    if(control.exito()){
+                        //Menu menu = new Menu();
+                        //menu.setVisible(true);
+                        dispose();
+                    }
+                } catch(NumberFormatException ex){
+                    ex.printStackTrace();
+                }
+                
             	
             }
         });
@@ -282,5 +310,16 @@ public class Register extends JFrame {
         
     }
 
-    
+
+
+	private void entraMouse(JButton boton){
+	    boton.setOpaque(true);
+	    boton.setBackground(verdeBoton);
+	    boton.setFont(new Font("Tahoma", Font.BOLD, 10));
+	}
+	private void saleMouse(JButton boton){
+	    boton.setOpaque(false);
+	    boton.setBackground(fondoNormal);
+	    boton.setFont(new Font("Tahoma", Font.BOLD, 11));
+	}
 }

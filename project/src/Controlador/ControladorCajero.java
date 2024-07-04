@@ -2,6 +2,8 @@ package Controlador;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -66,7 +68,7 @@ public class ControladorCajero {
     	return id;
     }
 
-    public void deposito(double monto) {
+    public void deposito(double monto, int id_cuenta_cliente) {
         try {
             conn.setAutoCommit(false);
             String query = "INSERT INTO transacciones (monto, tipo, fecha, id_cuenta_cliente) VALUES (?, ?, ?, ?)";
@@ -102,7 +104,20 @@ public class ControladorCajero {
         } 
     }
     
-    public void retiro(double monto) {
+
+    public void retiro(double monto, JComboBox servicio) {
+        realizado = false;
+        String ser = (String) servicio.getSelectedItem();
+        switch(ser){
+            case "Luz":
+                id_cuenta = 9;
+            case "Agua":
+                id_cuenta = 8;
+            case "Gas":
+                id_cuenta = 11;
+            case "Internet": 
+                id_cuenta = 10;
+        }
         try {
             conn.setAutoCommit(false);
             if (saldo() >= monto) {
@@ -115,8 +130,9 @@ public class ControladorCajero {
 
                     int rowsInserted = pstmt.executeUpdate();
                     if (rowsInserted > 0) {
-                    	JOptionPane.showMessageDialog(null, "Retiro exitoso");
                         conn.commit();
+                        JOptionPane.showMessageDialog(null, "Retiro exitoso");
+                        realizado = true;
                     } else {
                         throw new SQLException("No se pudo insertar la transacción.");
                     }
@@ -176,7 +192,6 @@ public class ControladorCajero {
                         realizado = false;
                         throw new SQLException("No se pudo insertar la transacción.");
                     }
-                    hecho();
                 } 
             }else {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente");

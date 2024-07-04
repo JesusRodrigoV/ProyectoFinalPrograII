@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 public class ControladorRegister {
@@ -23,6 +22,7 @@ public class ControladorRegister {
     private JTextField telefono;
     private JTextField cedula;
     private Connection conn;
+    public boolean cerrar = false;
 
 
     public ControladorRegister(JComboBox cuentas, JTextField apellidos,JTextField nombres, JTextField telefono, JTextField cedula){
@@ -41,9 +41,9 @@ public class ControladorRegister {
 	public String obtenerPlanSeleccionado() {
         String cuenta = (String) cuentas.getSelectedItem();
         switch(cuenta){
-            case "Ahorro clasico":
-                return "junior";
             case "Ahorro Junior":
+                return "junior";
+            case "Ahorro Clásico":
                 return "clasica";
             case "Ahorro Senior":
                 return "senior";
@@ -78,17 +78,41 @@ public class ControladorRegister {
     
     
     public void insertar() {
-        String plan = obtenerPlanSeleccionado();
-        String apelli = apellidos.getText();
-        String nombre = nombres.getText();
-        int numCelular = Integer.parseInt(telefono.getText());
-        String nCedula = cedula.getText();
-        String usuario = nCedula;
-        String clave = nCedula;
+        cerrar = false;
+        String plan = "";
+        String apelli = "";
+        String nombre = "";
+        int numCelular = 0;
+        String nCedula = "";
+        String usuario = "";
+        String clave = "";
+        try{
+            plan = obtenerPlanSeleccionado();
+            apelli = apellidos.getText();
+            nombre = nombres.getText();
+            numCelular = Integer.parseInt(telefono.getText());
+            nCedula = cedula.getText();
+            usuario = nCedula;
+            clave = nCedula;
+            if(plan.isEmpty() || apelli.isEmpty() || nombre.isEmpty() || Integer.toString(numCelular).isEmpty() || nCedula.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Introduzca valores");
+                apellidos.setText("");
+                nombres.setText("");
+                telefono.setText("");
+                cedula.setText("");
+
+            }
+        } catch(NumberFormatException ex){
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ingrese datos correctos");
+        } catch(Exception err){
+            err.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error intente de nuevo");
+        }
+        
 
         try {
             conn.setAutoCommit(false);
-
             try {
                 String query = "INSERT INTO banco.usuario (usuario_nombre, contrasena) VALUES (?, ?)";
                 int userId = 0;
@@ -162,8 +186,10 @@ public class ControladorRegister {
                     }
                 }
 
-                JOptionPane.showMessageDialog(null, "Se creo la cuenta. \nN. de cuenta: " + id_cuentas_cliente);
+                JOptionPane.showMessageDialog(null, "Se creo la cuenta. \nN. de cuenta: " + id_cuentas_cliente+"\nUsuario:"+
+                    nCedula+"\nContraseña:" + nCedula);
                 conn.commit();
+                cerrar = true;
                 System.out.println("Transacción exitosa.");
 
             } catch (SQLException ex) {
@@ -180,6 +206,9 @@ public class ControladorRegister {
 
     }
 
+    public boolean exito(){
+        return cerrar;
+    }
     
     public int edadCuenta() {
     	switch(obtenerPlanSeleccionado()) {

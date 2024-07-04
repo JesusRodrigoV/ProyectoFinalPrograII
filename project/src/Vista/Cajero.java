@@ -110,7 +110,6 @@ public class Cajero extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Transeferencia transfer = new Transeferencia(id, usuario);
                 transfer.setVisible(true);
-                dispose();
                 
             }
         });
@@ -176,7 +175,6 @@ public class Cajero extends JFrame {
         		ControladorCajero control = new ControladorCajero(id_cuenta, null, usuario);
                 Pagos pagar = new Pagos(id, usuario);
                 pagar.setVisible(true);
-                dispose();
         	}
         });
         GridBagConstraints gbc_btnPagos = new GridBagConstraints();

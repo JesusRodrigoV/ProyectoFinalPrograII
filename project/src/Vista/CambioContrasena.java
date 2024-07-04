@@ -15,8 +15,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class CambioUsuario extends JFrame {
+public class CambioContrasena extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -31,7 +33,7 @@ public class CambioUsuario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CambioUsuario frame = new CambioUsuario();
+					CambioContrasena frame = new CambioContrasena();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +45,7 @@ public class CambioUsuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CambioUsuario() {
+	public CambioContrasena() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 374, 212);
 		contentPane = new JPanel();
@@ -126,14 +128,18 @@ public class CambioUsuario extends JFrame {
 		gbc_passwordField_1.gridy = 4;
 		contentPane.add(passwordField_1, gbc_passwordField_1);
 		
-		JButton btnNewButton = new JButton("Aceptar");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 5;
-		contentPane.add(btnNewButton, gbc_btnNewButton);
+		JButton btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
+		gbc_btnAceptar.gridwidth = 2;
+		gbc_btnAceptar.anchor = GridBagConstraints.NORTHEAST;
+		gbc_btnAceptar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAceptar.gridx = 2;
+		gbc_btnAceptar.gridy = 5;
+		contentPane.add(btnAceptar, gbc_btnAceptar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();

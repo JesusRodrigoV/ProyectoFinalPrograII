@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
+import Controlador.ControladorCajero;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -28,6 +31,7 @@ public class Pagos extends JFrame {
 	private static JTextField usuario;
 	private JPanel contentPane;
 	private JTextField monto;
+	private JComboBox servicio;
 	private Color verdeBoton = new Color(66, 245, 158);
     private Color verdeOscuro = new Color(13, 171, 0);
     private Color rojo = new Color(255, 91, 91);
@@ -108,7 +112,7 @@ public class Pagos extends JFrame {
 		contentPane.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
 		
 		String[] serv = {"Luz", "Agua", "Gas", "Internet"};
-		JComboBox servicio = new JComboBox<>(serv);
+		servicio = new JComboBox<>(serv);
 		GridBagConstraints gbc_servicio = new GridBagConstraints();
 		gbc_servicio.fill = GridBagConstraints.HORIZONTAL;
 		gbc_servicio.insets = new Insets(0, 0, 5, 5);
@@ -120,6 +124,13 @@ public class Pagos extends JFrame {
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ControladorCajero control = new ControladorCajero(0, monto, usuario);
+				int id = control.idCuenta(id_cliente);
+				control.setId_cuenta(id);
+				control.transferencia(idCuentaServicio());
+				if (control.hecho()) {
+					dispose();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
@@ -189,4 +200,18 @@ public class Pagos extends JFrame {
         boton.setBackground(fondoNormal);
         boton.setFont(new Font("Tahoma", Font.BOLD, 11));
     }
+	private int idCuentaServicio(){
+		switch((String) servicio.getSelectedItem()){
+			case "Luz":
+				return 9;
+			case "Agua":
+				return 8;
+			case "Gas":
+				return 11;
+			case "Internet": 
+				return 10;
+			default:
+				return 0;
+		}
+	}
 }

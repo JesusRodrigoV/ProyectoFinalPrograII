@@ -10,6 +10,8 @@ import javax.swing.border.MatteBorder;
 import Controlador.ControladorPerfil;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
@@ -75,7 +77,7 @@ public class Perfil extends JFrame {
 		JButton Cambio = new JButton("Cambiar datos");
 		Cambio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				JOptionPane.showOptionDialog(null, "Solicitar cambio de contraseña", getTitle(), id, id_cuenta, null, getComponentListeners(), e);
 			}
 		});
 		GridBagConstraints gbc_Cambio = new GridBagConstraints();
@@ -231,7 +233,7 @@ public class Perfil extends JFrame {
 		btnSalir.setHorizontalAlignment(SwingConstants.CENTER);
 		btnSalir.setHorizontalAlignment(SwingConstants.CENTER);
 		btnSalir.setFocusPainted(false);
-		btnSalir.setBorder(new MatteBorder(0, 0, 0, 0, verdeOscuro));
+		btnSalir.setBorder(new MatteBorder(1, 0, 0, 0, rojo));
 		btnSalir.setBackground(fondoNormal);
 		btnSalir.addMouseListener(new MouseAdapter() {
             @Override

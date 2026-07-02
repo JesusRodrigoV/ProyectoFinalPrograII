@@ -26,6 +26,9 @@ out/
 nbproject/
 nb-configuration.xml
 
+# AI / local tooling
+.atl/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -35,6 +38,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# MySQL Workbench
+*.mwb
 
 # Docker
 mysql-data/

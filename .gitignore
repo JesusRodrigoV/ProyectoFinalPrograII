@@ -1,1 +1,40 @@
-/.metadata/
+# Maven
+target/
+*.jar
+*.war
+*.ear
+
+# Eclipse
+.metadata/
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/
+nb-configuration.xml
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Docker
+mysql-data/

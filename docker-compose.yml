@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: banco-db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: banco
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  build:
+    image: maven:3-eclipse-temurin-21
+    container_name: banco-build
+    working_dir: /app
+    volumes:
+      - .:/app
+      - m2-cache:/root/.m2
+    command: mvn package -DskipTests
+    profiles:
+      - build
+
+volumes:
+  mysql-data:
+  m2-cache:
